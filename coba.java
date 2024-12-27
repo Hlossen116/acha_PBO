@@ -1,49 +1,4 @@
-    public void reloadDatabase(){
-        String dbUrl = "jdbc:mysql://localhost:3306/perkuliahan"; // Sesuaikan dengan info DB Anda
-        String usernameDb = "root"; // Sesuaikan dengan username
-        String passwordDb = "";
-
-        String sql = "SELECT * FROM mahasiswa"; // Query SQL untuk mengambil semua data
-
-        try (Connection con = DriverManager.getConnection(dbUrl, usernameDb, passwordDb)) {
-            try (PreparedStatement stmt = con.prepareStatement(sql)) {
-                ResultSet rs = stmt.executeQuery();
-
-                // Clear existing data
-                tableModel.setRowCount(0); // Hapus semua baris lama
-
-                // Tambahkan baris baru dari ResultSet
-                while (rs.next()) {
-                    String nim = rs.getString("nim");
-                    String nama = rs.getString("nama");
-                    String email = rs.getString("email");
-                    String jenisKelamin = rs.getString("jenis_kelamin");
-                    String alamat = rs.getString("alamat");
-                    String fakultas = rs.getString("fakultas");
-                    String prodi = rs.getString("prodi");
-                    int semester = rs.getInt("semester");
-
-                    // Menambahkan data ke JTable
-                    tableModel.addRow(new Object[]{nim, nama, email,jenisKelamin, alamat, fakultas, prodi, semester});
-                }
-
-                // Perbarui UI setelah data ditambahkan
-                tableModel.fireTableDataChanged();
-
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Gagal mengambil data: " + ex.getMessage());
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Gagal koneksi ke database: " + ex.getMessage());
-        }
-}
-
-
-
-
-
+    // Bagaian UI delete databasenya
     public void deleteData() {
         titleLabel.setText("Menu Delete Data");
         pages = 2;
@@ -123,7 +78,14 @@
         mhsHapusPanel.add(back, displayDeleteDataGrid);
 
         this.add(mhsHapusPanel, BorderLayout.CENTER);
-    }  // ui delete data
+    } 
+
+
+
+
+
+
+// ini proses delete databasenya
     public void procesDeleteDb() {
         String nim = nimDeleteField.getText();
         if (nim.isEmpty()) {
@@ -149,10 +111,67 @@
             JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat menghapus data.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     } // proses delete datanya
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ini untuk pebacaaan data dari database ke IU nya
+public void reloadDatabase(){
+        String dbUrl = "jdbc:mysql://localhost:3306/perkuliahan"; // Sesuaikan dengan info DB Anda
+        String usernameDb = "root"; // Sesuaikan dengan username
+        String passwordDb = "";
+
+        String sql = "SELECT * FROM mahasiswa"; // Query SQL untuk mengambil semua data
+
+        try (Connection con = DriverManager.getConnection(dbUrl, usernameDb, passwordDb)) {
+            try (PreparedStatement stmt = con.prepareStatement(sql)) {
+                ResultSet rs = stmt.executeQuery();
+
+                // Clear existing data
+                tableModel.setRowCount(0); // Hapus semua baris lama
+
+                // Tambahkan baris baru dari ResultSet
+                while (rs.next()) {
+                    String nim = rs.getString("nim");
+                    String nama = rs.getString("nama");
+                    String email = rs.getString("email");
+                    String jenisKelamin = rs.getString("jenis_kelamin");
+                    String alamat = rs.getString("alamat");
+                    String fakultas = rs.getString("fakultas");
+                    String prodi = rs.getString("prodi");
+                    int semester = rs.getInt("semester");
+
+                    // Menambahkan data ke JTable
+                    tableModel.addRow(new Object[]{nim, nama, email,jenisKelamin, alamat, fakultas, prodi, semester});
+                }
+
+                // Perbarui UI setelah data ditambahkan
+                tableModel.fireTableDataChanged();
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Gagal mengambil data: " + ex.getMessage());
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Gagal koneksi ke database: " + ex.getMessage());
+        }
+}
     
     
     
-    
+
+
+// bagian kembali kemenu admin
     public void backToAdmin(){
         titleLabel.setText("Menu Admin");
         if(pages == 1){
